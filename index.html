@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>راديو مزامير داود | أوقات الصلاة الدقيقة + ساعة حائطية</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0f1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Cairo', 'Almarai', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .neon-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.15), rgba(0, 0, 0, 0.95));
+            animation: bgPulse 4s ease-in-out infinite;
+        }
+        @keyframes bgPulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+        .neon-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: floatNeon 15s ease-in-out infinite;
+        }
+        .blob-n1 { width: 400px; height: 400px; background: #00ff88; top: -100px; left: -100px; opacity: 0.3; }
+        .blob-n2 { width: 350px; height: 350px; background: #ff00ff; bottom: -80px; right: -80px; opacity: 0.25; animation-delay: 5s; }
+        .blob-n3 { width: 300px; height: 300px; background: #ff6600; top: 50%; left: 30%; opacity: 0.2; animation-delay: 8s; }
+        .blob-n4 { width: 450px; height: 450px; background: #0066ff; bottom: 20%; left: -150px; opacity: 0.2; animation-delay: 3s; }
+        @keyframes floatNeon {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(80px, -80px) scale(1.2); }
+            66% { transform: translate(-50px, 60px) scale(0.9); }
+        }
+        
+        main {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(10, 20, 20, 0.75);
+            backdrop-filter: blur(20px);
+            border-radius: 56px;
+            border: 2px solid rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+        main.glow-effect { box-shadow: 0 0 80px rgba(0, 255, 136, 0.6); }
+        
+        header {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 100, 50, 0.2));
+            text-align: center;
+            padding: 20px 50px 16px 50px;
+            margin: 12px 12px 0 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            position: relative;
+        }
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid #00ff88;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            z-index: 10;
+        }
+        .menu-btn:hover { background: #00ff88; transform: scale(1.05); }
+        .menu-btn i { color: #00ff88; font-size: 22px; transition: 0.2s; }
+        .menu-btn:hover i { color: #1a1a2e; }
+        
+        .clock-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .wall-clock {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 5px;
+            background: radial-gradient(circle at 30% 25%, #0a2a1a, #051005);
+            border-radius: 50%;
+            border: 4px solid #00ff88;
+            box-shadow: 0 0 20px #00ff88, 0 0 40px rgba(0, 255, 136, 0.3);
+            position: relative;
+            animation: clockGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes clockGlow {
+            from { box-shadow: 0 0 15px #00ff88, 0 0 30px rgba(0, 255, 136, 0.3); }
+            to { box-shadow: 0 0 35px #00ff88, 0 0 60px rgba(0, 255, 136, 0.5); }
+        }
+        .clock-hand { position: absolute; border-radius: 10px; transform-origin: bottom center; bottom: 50%; left: 50%; transform: translateX(-50%); }
+        .hour-hand { width: 5px; height: 38px; background: #00ff88; box-shadow: 0 0 10px #00ff88; }
+        .minute-hand { width: 3px; height: 52px; background: #00ffaa; box-shadow: 0 0 8px #00ffaa; }
+        .second-hand { width: 2px; height: 60px; background: #ff3366; box-shadow: 0 0 8px #ff3366; }
+        .clock-center { position: absolute; width: 8px; height: 8px; background: #00ff88; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 12px #00ff88; }
+        .clock-numbers { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+        .clock-number { position: absolute; color: #ffffff; font-family: 'Orbitron', monospace; font-size: 13px; font-weight: bold; text-shadow: 0 0 8px #00ff88; transform: translate(-50%, -50%); }
+        
+        .date-info {
+            text-align: center;
+            margin-top: 5px;
+            font-family: 'Orbitron', monospace;
+            color: #00ff88;
+            text-shadow: 0 0 5px #00ff88;
+        }
+        .gregorian-date { font-size: 0.7rem; opacity: 0.9; }
+        .hijri-date { font-size: 0.75rem; font-weight: bold; }
+        
+        .prayer-bar {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 30px;
+            margin: 10px 12px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        .prayer-title { color: #ffcc00; font-size: 0.75rem; margin-bottom: 8px; font-weight: bold; }
+        .prayer-times-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .prayer-item {
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 20px;
+            padding: 5px 8px;
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+        }
+        .prayer-name { font-size: 0.6rem; color: #aaa; }
+        .prayer-time { font-size: 0.75rem; font-family: 'Orbitron', monospace; color: #00ff88; font-weight: bold; }
+        .next-prayer-text { 
+            font-size: 0.7rem; 
+            color: #ffcc00; 
+            margin-top: 8px; 
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 6px;
+        }
+        .location-badge {
+            font-size: 0.6rem;
+            color: #88ffaa;
+            margin-top: 5px;
+        }
+        
+        .buttons-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 60px;
+            margin: 15px 12px;
+            padding: 12px;
+            flex-wrap: wrap;
+        }
+        .ctrl-btn {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            width: 55px;
+            height: 55px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 20px #00ff88, 0 4px 0 #008844;
+            transition: 0.07s linear;
+        }
+        .ctrl-btn:active { transform: translateY(3px); }
+        .ctrl-btn i { color: #1a1a2e; pointer-events: none; }
+        .special-btn { background: linear-gradient(135deg, #ff3366, #cc0055); box-shadow: 0 0 20px #ff3366, 0 4px 0 #990044; }
+        .special-btn i { color: white; }
+        .repeat-active { background: linear-gradient(135deg, #ffcc00, #ff9900); box-shadow: 0 0 25px #ffcc00; }
+        
+        .pro-tools {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            margin: 12px;
+            padding: 18px 15px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff88;
+            border: 1.5px solid #00ff88;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+        }
+        .time-box {
+            display: flex;
+            justify-content: space-between;
+            color: #00ff88;
+            font-family: 'Orbitron', monospace;
+            margin: 8px 5px;
+            font-size: 0.85rem;
+            text-shadow: 0 0 8px #00ff88;
+        }
+        #progress-bar {
+            width: 100%;
+            height: 8px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+        }
+        #progress-bar::-webkit-slider-thumb {
+            background: #00ff88;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            box-shadow: 0 0 15px #00ff88;
+        }
+        #downloadBtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #1a1a2e;
+            padding: 12px 20px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 800;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 0 20px #00ff88;
+            cursor: pointer;
+        }
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .slider-group .time-label {
+            min-width: 80px;
+            color: #00ff88;
+            font-family: 'Orbitron', monospace;
+        }
+        .affichage-valeur {
+            width: 55px;
+            background: rgba(0,0,0,0.7);
+            color: #00ff88;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #00ff88;
+            padding: 5px;
+            font-family: 'Orbitron', monospace;
+        }
+        input[type="range"] { flex: 1; cursor: pointer; }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 15px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 30px;
+            margin: 8px 12px;
+            font-size: 0.7rem;
+            color: #00ff88;
+        }
+        .dua-text {
+            color: #00ff88;
+            text-align: center;
+            padding: 12px;
+            font-size: 0.7rem;
+        }
+        
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.3s ease;
+        }
+        .drawer-overlay.active { visibility: visible; opacity: 1; }
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 85%;
+            max-width: 320px;
+            height: 100%;
+            background: linear-gradient(145deg, #0a1f15, #051a0a);
+            border-left: 2px solid #00ff88;
+            box-shadow: -5px 0 40px rgba(0, 255, 136, 0.3);
+            z-index: 1001;
+            transform: translateX(-100%);
+            transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 20px;
+            overflow-y: auto;
+            direction: rtl;
+        }
+        .drawer.active { transform: translateX(0); }
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #00ff88;
+            margin-bottom: 20px;
+        }
+        .drawer-header h3 { color: #00ff88; font-family: 'Orbitron', monospace; font-size: 1.2rem; }
+        .close-drawer {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid #00ff88;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .close-drawer:hover { background: #ff3366; border-color: #ff3366; }
+        .close-drawer i { color: #00ff88; font-size: 20px; }
+        .drawer-section { margin-bottom: 25px; }
+        .drawer-section-title {
+            color: #ffcc00;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            border-right: 3px solid #00ff88;
+            padding-right: 10px;
+        }
+        .drawer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .drawer-btn {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid #00ff88;
+            border-radius: 30px;
+            padding: 10px 8px;
+            color: #00ff88;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .drawer-btn:hover { background: #00ff88; color: #000; box-shadow: 0 0 15px #00ff88; }
+        .drawer-color-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .drawer-color-dot {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: 0.2s;
+        }
+        .drawer-color-dot:hover { transform: scale(1.1); }
+        .drawer-note {
+            color: #88ffbb;
+            font-size: 0.65rem;
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,255,136,0.3);
+        }
+        
+        @media (max-width: 480px) {
+            .ctrl-btn { width: 50px; height: 50px; font-size: 20px; }
+            .wall-clock { width: 120px; height: 120px; }
+            .prayer-item { min-width: 50px; }
+            .prayer-time { font-size: 0.65rem; }
+        }
+        .neon-text { text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88; }
+        .refresh-icon {
+            cursor: pointer;
+            margin-right: 8px;
+            font-size: 0.7rem;
+            transition: 0.2s;
+        }
+        .refresh-icon:hover { transform: rotate(180deg); color: #ffcc00; }
+    </style>
+</head>
+<body>
+    <div class="neon-bg">
+        <div class="neon-blob blob-n1"></div>
+        <div class="neon-blob blob-n2"></div>
+        <div class="neon-blob blob-n3"></div>
+        <div class="neon-blob blob-n4"></div>
+    </div>
+
+    <div class="drawer-overlay" id="drawerOverlay">
+        <div class="drawer" id="drawer">
+            <div class="drawer-header">
+                <h3><i class="fas fa-sliders-h"></i> الخصائص</h3>
+                <div class="close-drawer" id="closeDrawerBtn"><i class="fas fa-times"></i></div>
+            </div>
+            <div class="drawer-section">
+                <div class="drawer-section-title"><i class="fas fa-palette"></i> الألوان</div>
+                <div class="drawer-color-row" id="drawerColorPalette">
+                    <div class="drawer-color-dot" style="background:#00ff88;"></div>
+                    <div class="drawer-color-dot" style="background:#ff3366;"></div>
+                    <div class="drawer-color-dot" style="background:#ffcc00;"></div>
+                    <div class="drawer-color-dot" style="background:#0066ff;"></div>
+                    <div class="drawer-color-dot" style="background:#aa00ff;"></div>
+                    <div class="drawer-color-dot" style="background:#ffffff;"></div>
+                </div>
+            </div>
+            <div class="drawer-section">
+                <div class="drawer-section-title"><i class="fas fa-clock"></i> مؤقت النوم</div>
+                <div class="drawer-grid">
+                    <div class="drawer-btn" id="drawerSleep30"><i class="fas fa-bed"></i> 30 دقيقة</div>
+                    <div class="drawer-btn" id="drawerSleep60"><i class="fas fa-hourglass"></i> 60 دقيقة</div>
+                    <div class="drawer-btn" id="drawerCancelSleep"><i class="fas fa-ban"></i> إلغاء</div>
+                </div>
+            </div>
+            <div class="drawer-section">
+                <div class="drawer-section-title"><i class="fas fa-magic"></i> التأثيرات</div>
+                <div class="drawer-grid">
+                    <div class="drawer-btn" id="drawerEqBoost"><i class="fas fa-chart-line"></i> تعزيز الصوت</div>
+                    <div class="drawer-btn" id="drawerNightMode"><i class="fas fa-moon"></i> إضاءة ليلية</div>
+                    <div class="drawer-btn" id="drawerFadeEffect"><i class="fas fa-magic"></i> تأثير خفيف</div>
+                    <div class="drawer-btn" id="drawerNotifications"><i class="fas fa-bell"></i> الإشعارات</div>
+                </div>
+            </div>
+            <div class="drawer-section">
+                <div class="drawer-btn" id="drawerAbout">📡 عن التطبيق</div>
+            </div>
+            <div class="drawer-note"><i class="fas fa-hands-praying"></i> سبحان الله وبحمده</div>
+        </div>
+    </div>
+
+    <main id="player">
+        <header>
+            <div class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></div>
+            <div class="clock-container">
+                <div class="wall-clock" id="wallClock">
+                    <div class="clock-numbers" id="clockNumbers"></div>
+                    <div class="clock-hand hour-hand" id="hourHand"></div>
+                    <div class="clock-hand minute-hand" id="minuteHand"></div>
+                    <div class="clock-hand second-hand" id="secondHand"></div>
+                    <div class="clock-center"></div>
+                </div>
+                <div class="date-info">
+                    <div class="gregorian-date" id="gregorianDate">...</div>
+                    <div class="hijri-date" id="hijriDate">...</div>
+                </div>
+            </div>
+            <h2 id="reciter-name" class="neon-text">🎙️ القارئ خالد الجليل</h2>
+            <h1 style="background: linear-gradient(135deg,#00ff88,#ffcc00,#ff3366); -webkit-background-clip:text; background-clip:text; color:transparent;">✨ راديو مزامير داود ✨</h1>
+            <marquee behavior="alternate" id="track" style="color:#00ff88; background:rgba(0,0,0,0.5); border-radius:40px; padding:8px; margin-top:8px;">🎵 تلاوات خاشعة وأناشيد روحانية 🎵</marquee>
+        </header>
+
+        <div class="prayer-bar" id="prayerBar">
+            <div class="prayer-title">
+                <i class="fas fa-mosque"></i> أوقات الصلاة - الدار البيضاء
+                <i class="fas fa-sync-alt refresh-icon" id="refreshPrayerBtn" title="تحديث"></i>
+            </div>
+            <div class="prayer-times-row" id="prayerTimesContainer">
+                <div class="prayer-item"><div class="prayer-name">الفجر</div><div class="prayer-time" id="fajrTime">--:--</div></div>
+                <div class="prayer-item"><div class="prayer-name">الظهر</div><div class="prayer-time" id="dhuhrTime">--:--</div></div>
+                <div class="prayer-item"><div class="prayer-name">العصر</div><div class="prayer-time" id="asrTime">--:--</div></div>
+                <div class="prayer-item"><div class="prayer-name">المغرب</div><div class="prayer-time" id="maghribTime">--:--</div></div>
+                <div class="prayer-item"><div class="prayer-name">العشاء</div><div class="prayer-time" id="ishaTime">--:--</div></div>
+            </div>
+            <div class="next-prayer-text" id="nextPrayerText">⏳ جاري تحميل أوقات الصلاة...</div>
+            <div class="location-badge"><i class="fas fa-map-marker-alt"></i> الدار البيضاء، المغرب</div>
+        </div>
+
+        <div class="status-bar">
+            <span><i class="fas fa-volume-up"></i> <span id="volStatus">75%</span></span>
+            <span><i class="fas fa-clock"></i> <span id="liveTime"></span></span>
+            <span><span id="currentDate"></span></span>
+        </div>
+
+        <div class="buttons-row">
+            <div id="back" class="ctrl-btn"><i class="fas fa-step-backward"></i></div>
+            <div id="play" class="ctrl-btn"><i class="fas fa-play"></i></div>
+            <div id="next" class="ctrl-btn"><i class="fas fa-step-forward"></i></div>
+            <div id="repeatSegment" class="ctrl-btn special-btn"><i class="fas fa-repeat"></i></div>
+            <div id="loopMode" class="ctrl-btn special-btn"><i class="fas fa-redo-alt"></i></div>
+        </div>
+        <audio id="audiofile" preload="metadata"></audio>
+
+        <article class="pro-tools">
+            <select id="reciter-list"></select>
+            <select id="playlist"></select>
+            <input type="range" id="progress-bar" value="0" min="0" step="0.1">
+            <div class="time-box"><span id="current-time">00:00</span><span id="duration-time">00:00</span></div>
+            <a id="downloadBtn" href="#" download><i class="fas fa-download"></i> تحميل السورة</a>
+        </article>
+
+        <article id="range">
+            <div class="slider-group"><span class="time-label"><i class="fas fa-microphone-alt"></i> VOLUME</span>
+                <input type="text" id="niveau" class="affichage-valeur" readonly>
+                <input type="range" id="volume" value="75" min="0" max="100">
+            </div>
+            <div class="slider-group"><span class="time-label"><i class="fas fa-forward"></i> SPEED</span>
+                <input type="text" id="playbackniveau" class="affichage-valeur" readonly>
+                <input type="range" id="vitesse" value="100" max="200" min="30">
+            </div>
+        </article>
+
+        <div class="dua-text">
+            <i class="fas fa-hands-praying"></i> اضغط على زر <i class="fas fa-bars"></i> لفتح القائمة
+        </div>
+    </main>
+
+    <script>
+        (function(){
+            // ========== بيانات القراء والسور ==========
+            const RECITERS_DB = [
+                { id: 'jleel', name: 'خالد الجليل' }, { id: 'Aamer', name: 'عامر المهلهل' },
+                { id: 'Abdullahk', name: 'عبد الله خياط' }, { id: 'IbrahemSadan', name: 'إبراهيم السعدان' },
+                { id: 'a_majed', name: 'عبد المجيد' }, { id: 'ajm', name: 'أحمد العجمي' },
+                { id: 'bader', name: 'بدر التركي' }, { id: 'minsh', name: 'محمد المنشاوي' },
+                { id: 'qht', name: 'خالد القحطاني' }, { id: 'shaksh', name: 'محمود الحصري' }
+            ];
+            const SURAH_NAMES = [
+                "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
+                "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه", "الأنبياء", "الحج",
+                "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم", "لقمان", "السجدة", "الأحزاب",
+                "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر", "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف",
+                "محمد", "الفتح", "الحجرات", "ق", "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة",
+                "الحشر", "الممتحنة", "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة",
+                "المعارج", "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+                "التكوير", "الإنفطار", "المطففين", "الإنشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد", "الشمس",
+                "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات", "القارعة", "التكاثر",
+                "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر", "المسد", "الإخلاص", "الفلق", "الناس"
+            ];
+
+            let notificationPermission = false;
+            let sleepTimerId = null;
+            let eqBoostActive = false;
+            let nightModeActive = false;
+            let currentPrayerTimings = null;
+            let nextPrayerInterval = null;
+
+            // ========== الساعة التناظرية ==========
+            function createClockNumbers() {
+                const container = document.getElementById('clockNumbers');
+                if(!container) return;
+                for(let i=1; i<=12; i++) {
+                    const angle = (i * 30) * Math.PI / 180;
+                    const radius = 50;
+                    const x = 50 + radius * Math.sin(angle);
+                    const y = 50 - radius * Math.cos(angle);
+                    const num = document.createElement('div');
+                    num.className = 'clock-number';
+                    num.style.left = x + '%';
+                    num.style.top = y + '%';
+                    num.textContent = i;
+                    container.appendChild(num);
+                }
+            }
+            
+            function updateClockHands() {
+                const now = new Date();
+                const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+                const hourHand = document.getElementById('hourHand');
+                const minuteHand = document.getElementById('minuteHand');
+                const secondHand = document.getElementById('secondHand');
+                if(hourHand) hourHand.style.transform = `translateX(-50%) rotate(${(h%12)*30 + m*0.5}deg)`;
+                if(minuteHand) minuteHand.style.transform = `translateX(-50%) rotate(${m*6 + s*0.1}deg)`;
+                if(secondHand) secondHand.style.transform = `translateX(-50%) rotate(${s*6}deg)`;
+            }
+            
+            // ========== التاريخ ==========
+            function updateDateDisplay() {
+                const now = new Date();
+                const day = now.getDate();
+                const month = now.getMonth()+1;
+                const year = now.getFullYear();
+                document.getElementById('currentDate').innerHTML = `${day}/${month}/${year}`;
+            }
+            
+            async function updateHijriDate() {
+                const now = new Date();
+                const gregorianDay = now.getDate();
+                const gregorianMonth = now.toLocaleDateString('ar-EG', { month: 'long' });
+                const gregorianYear = now.getFullYear();
+                document.getElementById('gregorianDate').innerHTML = `${gregorianDay} ${gregorianMonth} ${gregorianYear}م`;
+                
+                try {
+                    const response = await fetch('https://api.aladhan.com/v1/gToH/' + now.getDate() + '-' + (now.getMonth()+1) + '-' + now.getFullYear());
+                    const data = await response.json();
+                    if(data.code === 200 && data.data) {
+                        const hijri = data.data.hijri;
+                        document.getElementById('hijriDate').innerHTML = `${hijri.day} ${hijri.month.ar} ${hijri.year} هـ`;
+                    }
+                } catch(e) { console.log("Hijri error"); }
+            }
+            
+            // ========== أوقات الصلاة لمدينة الدار البيضاء (دقة عالية) ==========
+            async function fetchPrayerTimes() {
+                const nextPrayerDiv = document.getElementById('nextPrayerText');
+                nextPrayerDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تحميل أوقات الصلاة...';
+                
+                try {
+                    // مدينة الدار البيضاء بالمغرب
+                    const city = "Casablanca";
+                    const country = "Morocco";
+                    
+                    const today = new Date();
+                    const day = today.getDate();
+                    const month = today.getMonth() + 1;
+                    const year = today.getFullYear();
+                    
+                    // استخدام API Aladhan بدقة عالية
+                    const url = `https://api.aladhan.com/v1/timingsByCity/${day}-${month}-${year}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=2&school=1`;
+                    console.log("Fetching prayer times for Casablanca:", url);
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if(data.code === 200 && data.data) {
+                        const timings = data.data.timings;
+                        currentPrayerTimings = timings;
+                        
+                        // تحديث العرض بالأرقام الغربية
+                        document.getElementById('fajrTime').innerHTML = timings.Fajr;
+                        document.getElementById('dhuhrTime').innerHTML = timings.Dhuhr;
+                        document.getElementById('asrTime').innerHTML = timings.Asr;
+                        document.getElementById('maghribTime').innerHTML = timings.Maghrib;
+                        document.getElementById('ishaTime').innerHTML = timings.Isha;
+                        
+                        updateNextPrayer();
+                        nextPrayerDiv.innerHTML = '<i class="fas fa-check-circle"></i> تم التحديث بنجاح';
+                        setTimeout(() => updateNextPrayer(), 2000);
+                        return true;
+                    } else {
+                        throw new Error("API response error");
+                    }
+                } catch(error) {
+                    console.error("Prayer API error:", error);
+                    nextPrayerDiv.innerHTML = '⚠️ خطأ في الاتصال، سيتم إعادة المحاولة تلقائياً';
+                    // بيانات احتياطية تقريبية للدار البيضاء
+                    const fallbackTimes = { Fajr: "05:30", Dhuhr: "13:30", Asr: "16:45", Maghrib: "19:30", Isha: "21:00" };
+                    currentPrayerTimings = fallbackTimes;
+                    document.getElementById('fajrTime').innerHTML = fallbackTimes.Fajr;
+                    document.getElementById('dhuhrTime').innerHTML = fallbackTimes.Dhuhr;
+                    document.getElementById('asrTime').innerHTML = fallbackTimes.Asr;
+                    document.getElementById('maghribTime').innerHTML = fallbackTimes.Maghrib;
+                    document.getElementById('ishaTime').innerHTML = fallbackTimes.Isha;
+                    updateNextPrayer();
+                }
+                return false;
+            }
+            
+            function updateNextPrayer() {
+                if(!currentPrayerTimings) return;
+                
+                const now = new Date();
+                const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                const prayers = [
+                    { name: 'الفجر', time: currentPrayerTimings.Fajr },
+                    { name: 'الظهر', time: currentPrayerTimings.Dhuhr },
+                    { name: 'العصر', time: currentPrayerTimings.Asr },
+                    { name: 'المغرب', time: currentPrayerTimings.Maghrib },
+                    { name: 'العشاء', time: currentPrayerTimings.Isha }
+                ];
+                
+                let nextPrayer = null;
+                let smallestDiff = Infinity;
+                
+                for(let p of prayers) {
+                    if(p.time) {
+                        const [hours, minutes] = p.time.split(':').map(Number);
+                        const prayerMinutes = hours * 60 + minutes;
+                        let diff = prayerMinutes - currentMinutes;
+                        if(diff < 0) diff += 24 * 60;
+                        if(diff < smallestDiff) {
+                            smallestDiff = diff;
+                            nextPrayer = p;
+                        }
+                    }
+                }
+                
+                if(nextPrayer) {
+                    const hours = Math.floor(smallestDiff / 60);
+                    const minutes = smallestDiff % 60;
+                    let timeText = "";
+                    if(hours > 0) timeText += `${hours} ساعة `;
+                    if(minutes > 0) timeText += `${minutes} دقيقة`;
+                    if(hours === 0 && minutes === 0) timeText = "الآن";
+                    
+                    document.getElementById('nextPrayerText').innerHTML = `🕌 الصلاة القادمة: ${nextPrayer.name} بعد ${timeText}`;
+                    
+                    // تنبيه قبل الصلاة بـ 10 دقائق
+                    if(notificationPermission && smallestDiff <= 10 && smallestDiff > 0) {
+                        new Notification("راديو مزامير داود", { 
+                            body: `موعد صلاة ${nextPrayer.name} بعد ${minutes} دقيقة`,
+                            icon: "https://cdn-icons-png.flaticon.com/512/3389/3389081.png"
+                        });
+                    }
+                }
+            }
+            
+            function startPrayerAutoUpdate() {
+                fetchPrayerTimes();
+                // تحديث أوقات الصلاة كل ساعة
+                setInterval(fetchPrayerTimes, 60 * 60 * 1000);
+                // تحديث الصلاة القادمة كل دقيقة
+                setInterval(() => { if(currentPrayerTimings) updateNextPrayer(); }, 60000);
+            }
+            
+            // ========== مشغل الراديو ==========
+            class RadioApp {
+                constructor() {
+                    this.audio = document.getElementById('audiofile');
+                    this.playBtn = document.getElementById('play');
+                    this.nextBtn = document.getElementById('next');
+                    this.backBtn = document.getElementById('back');
+                    this.repeatBtn = document.getElementById('repeatSegment');
+                    this.loopBtn = document.getElementById('loopMode');
+                    this.trackMarquee = document.getElementById('track');
+                    this.reciterSelect = document.getElementById('reciter-list');
+                    this.playlistSelect = document.getElementById('playlist');
+                    this.reciterNameSpan = document.getElementById('reciter-name');
+                    this.downloadLink = document.getElementById('downloadBtn');
+                    this.progress = document.getElementById('progress-bar');
+                    this.currentSpan = document.getElementById('current-time');
+                    this.durationSpan = document.getElementById('duration-time');
+                    
+                    this.isPlaying = false;
+                    this.currentSurah = 0;
+                    this.currentReciter = 'jleel';
+                    this.loopSurah = false;
+                    this.repeatSegment = false;
+                    
+                    this.initSelectors();
+                    this.attachEvents();
+                    this.loadFromStorage();
+                    this.loadSurah(false);
+                    setInterval(() => {
+                        updateClockHands();
+                        updateDateDisplay();
+                    }, 1000);
+                    updateHijriDate();
+                    setInterval(updateHijriDate, 3600000);
+                }
+                
+                initSelectors() {
+                    for(let i=0;i<114;i++) {
+                        let opt = document.createElement('option');
+                        opt.value = i;
+                        opt.text = `📀 ${i+1} | سورة ${SURAH_NAMES[i]}`;
+                        this.playlistSelect.appendChild(opt);
+                    }
+                    RECITERS_DB.forEach(r => {
+                        let opt = document.createElement('option');
+                        opt.value = r.id;
+                        opt.text = `🎙️ ${r.name}`;
+                        this.reciterSelect.appendChild(opt);
+                    });
+                    this.reciterSelect.value = this.currentReciter;
+                }
+                
+                attachEvents() {
+                    this.reciterSelect.onchange = () => {
+                        this.currentReciter = this.reciterSelect.value;
+                        let r = RECITERS_DB.find(x=>x.id===this.currentReciter);
+                        if(r) this.reciterNameSpan.innerText = `🎙️ ${r.name}`;
+                        this.loadSurah(true);
+                        this.saveToStorage();
+                    };
+                    this.playlistSelect.onchange = () => {
+                        this.currentSurah = parseInt(this.playlistSelect.value);
+                        this.loadSurah(true);
+                        this.saveToStorage();
+                    };
+                    this.playBtn.onclick = () => this.togglePlay();
+                    this.nextBtn.onclick = () => { this.currentSurah = (this.currentSurah+1)%114; this.loadSurah(true); this.saveToStorage(); };
+                    this.backBtn.onclick = () => { this.currentSurah = (this.currentSurah-1+114)%114; this.loadSurah(true); this.saveToStorage(); };
+                    this.audio.onended = () => {
+                        if(this.repeatSegment || this.loopSurah) this.loadSurah(true);
+                        else this.nextBtn.click();
+                    };
+                    this.audio.ontimeupdate = () => {
+                        if(this.audio.duration) {
+                            this.progress.max = this.audio.duration;
+                            this.progress.value = this.audio.currentTime;
+                            this.currentSpan.innerText = this.formatTime(this.audio.currentTime);
+                            this.durationSpan.innerText = this.formatTime(this.audio.duration);
+                        }
+                    };
+                    this.progress.oninput = (e) => { if(this.audio.duration) this.audio.currentTime = parseFloat(e.target.value); };
+                    
+                    this.repeatBtn.onclick = () => {
+                        this.repeatSegment = !this.repeatSegment;
+                        if(this.repeatSegment) { this.loopSurah = false; this.loopBtn.classList.remove('repeat-active'); this.repeatBtn.classList.add('repeat-active'); this.showNotif("🔄 إعادة المقطع مفعلة"); }
+                        else { this.repeatBtn.classList.remove('repeat-active'); this.showNotif("⏹️ إلغاء إعادة المقطع"); }
+                        this.saveToStorage();
+                    };
+                    this.loopBtn.onclick = () => {
+                        this.loopSurah = !this.loopSurah;
+                        if(this.loopSurah) { this.repeatSegment = false; this.repeatBtn.classList.remove('repeat-active'); this.loopBtn.classList.add('repeat-active'); this.showNotif("🔁 تكرار السورة مفعل"); }
+                        else { this.loopBtn.classList.remove('repeat-active'); this.showNotif("⏹️ إلغاء تكرار السورة"); }
+                        this.saveToStorage();
+                    };
+                    
+                    const volSlide = document.getElementById('volume');
+                    const volVal = document.getElementById('niveau');
+                    const speedSlide = document.getElementById('vitesse');
+                    const speedVal = document.getElementById('playbackniveau');
+                    volSlide.oninput = () => { this.audio.volume = volSlide.value/100; volVal.value = volSlide.value; document.getElementById('volStatus').innerText = volSlide.value+"%"; };
+                    speedSlide.oninput = () => { this.audio.playbackRate = speedSlide.value/100; speedVal.value = speedSlide.value; };
+                    volSlide.dispatchEvent(new Event('input'));
+                    speedSlide.dispatchEvent(new Event('input'));
+                }
+                
+                loadSurah(autoPlay) {
+                    const num = (this.currentSurah+1).toString().padStart(3,'0');
+                    const url = `https://server10.mp3quran.net/${this.currentReciter}/${num}.mp3`;
+                    this.audio.src = url;
+                    const rec = RECITERS_DB.find(r=>r.id===this.currentReciter)?.name || 'القارئ';
+                    this.trackMarquee.innerHTML = `◉ سورة ${SURAH_NAMES[this.currentSurah]} | ${rec} ◉`;
+                    this.playlistSelect.value = this.currentSurah;
+                    this.downloadLink.href = url;
+                    if(autoPlay) {
+                        this.audio.play().then(() => { this.isPlaying = true; this.playBtn.innerHTML = '<i class="fas fa-pause"></i>'; }).catch(e=>console.log);
+                    } else {
+                        this.isPlaying = false;
+                        this.playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    }
+                }
+                
+                togglePlay() {
+                    if(this.isPlaying) {
+                        this.audio.pause();
+                        this.playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        this.isPlaying = false;
+                    } else {
+                        this.audio.play().then(() => {
+                            this.playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                            this.isPlaying = true;
+                        }).catch(e=>console.log);
+                    }
+                }
+                
+                showNotif(msg) {
+                    if(notificationPermission) new Notification("راديو مزامير داود", { body: msg, icon: "https://cdn-icons-png.flaticon.com/512/3389/3389081.png" });
+                }
+                
+                formatTime(sec) { if(isNaN(sec)) return "00:00"; let m=Math.floor(sec/60), s=Math.floor(sec%60); return `${m<10?'0'+m:m}:${s<10?'0'+s:s}`; }
+                
+                saveToStorage() {
+                    localStorage.setItem('radio_reciter', this.currentReciter);
+                    localStorage.setItem('radio_surah', this.currentSurah);
+                    localStorage.setItem('radio_loop', this.loopSurah);
+                    localStorage.setItem('radio_repeat', this.repeatSegment);
+                }
+                
+                loadFromStorage() {
+                    let r = localStorage.getItem('radio_reciter');
+                    let s = localStorage.getItem('radio_surah');
+                    let l = localStorage.getItem('radio_loop');
+                    let rep = localStorage.getItem('radio_repeat');
+                    if(r && RECITERS_DB.find(x=>x.id===r)) this.currentReciter = r;
+                    if(s && s>=0 && s<114) this.currentSurah = parseInt(s);
+                    if(l === 'true') { this.loopSurah = true; this.loopBtn.classList.add('repeat-active'); }
+                    if(rep === 'true') { this.repeatSegment = true; this.repeatBtn.classList.add('repeat-active'); }
+                    this.reciterSelect.value = this.currentReciter;
+                    this.playlistSelect.value = this.currentSurah;
+                    let recObj = RECITERS_DB.find(r=>r.id===this.currentReciter);
+                    if(recObj) this.reciterNameSpan.innerText = `🎙️ ${recObj.name}`;
+                }
+            }
+            
+            const app = new RadioApp();
+            
+            function startSleepTimer(minutes) {
+                if(sleepTimerId) clearTimeout(sleepTimerId);
+                sleepTimerId = setTimeout(() => {
+                    if(app.isPlaying) {
+                        app.audio.pause();
+                        app.playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        app.isPlaying = false;
+                    }
+                    app.showNotif("😴 تم إيقاف التشغيل (مؤقت النوم)");
+                }, minutes * 60 * 1000);
+                app.showNotif(`⏲️ تم ضبط مؤقت النوم بعد ${minutes} دقيقة`);
+            }
+            function cancelSleepTimer() {
+                if(sleepTimerId) { clearTimeout(sleepTimerId); sleepTimerId = null; }
+                app.showNotif("❌ تم إلغاء مؤقت النوم");
+            }
+            
+            document.getElementById('drawerSleep30').onclick = () => startSleepTimer(30);
+            document.getElementById('drawerSleep60').onclick = () => startSleepTimer(60);
+            document.getElementById('drawerCancelSleep').onclick = cancelSleepTimer;
+            
+            document.getElementById('drawerEqBoost').onclick = () => {
+                eqBoostActive = !eqBoostActive;
+                app.audio.volume = eqBoostActive ? Math.min(1, app.audio.volume + 0.15) : Math.max(0, app.audio.volume - 0.15);
+                app.showNotif(eqBoostActive ? "🔊 تعزيز الصوت مفعل" : "🔈 إلغاء تعزيز الصوت");
+                document.getElementById('volStatus').innerText = Math.floor(app.audio.volume*100)+"%";
+            };
+            
+            document.getElementById('drawerNightMode').onclick = () => {
+                nightModeActive = !nightModeActive;
+                document.body.style.background = nightModeActive ? '#050a0f' : '#0a0f1a';
+                app.showNotif(nightModeActive ? "🌙 الوضع الليلي مفعل" : "☀️ الوضع النهاري");
+            };
+            
+            document.getElementById('drawerFadeEffect').onclick = () => {
+                document.getElementById('player').classList.toggle('glow-effect');
+                app.showNotif("✨ تأثير الإضاءة المضيئة");
+            };
+            
+            document.getElementById('drawerNotifications').onclick = () => {
+                if (!("Notification" in window)) { alert("المتصفح لا يدعم الإشعارات"); return; }
+                if (notificationPermission) {
+                    notificationPermission = false;
+                    alert("تم إيقاف الإشعارات");
+                } else {
+                    Notification.requestPermission().then(perm => {
+                        if (perm === "granted") {
+                            notificationPermission = true;
+                            alert("✅ تم تفعيل الإشعارات");
+                            new Notification("راديو مزامير داود", { body: "سيتم تنبيهك قبل أوقات الصلاة" });
+                        } else alert("الرجاء السماح للإشعارات");
+                    });
+                }
+            };
+            
+            document.getElementById('drawerAbout').onclick = () => {
+                alert("🎵 راديو مزامير داود 🎵\n✓ ساعة حائطية مضيئة\n✓ التاريخ الهجري والميلادي\n✓ أوقات الصلاة الدقيقة لمدينة الدار البيضاء\n✓ قائمة دراور لجميع الخصائص\n✓ تكرار السورة وإعادة المقطع\n✓ مؤقت نوم + تعزيز الصوت\n✓ 6 ألوان للتطبيق");
+            };
+            
+            const colors = ['#00ff88', '#ff3366', '#ffcc00', '#0066ff', '#aa00ff', '#ffffff'];
+            document.querySelectorAll('#drawerColorPalette .drawer-color-dot').forEach((dot, idx) => {
+                dot.onclick = () => {
+                    const col = colors[idx];
+                    document.getElementById('player').style.borderColor = col;
+                    document.getElementById('player').style.boxShadow = `0 0 50px ${col}80`;
+                    document.querySelectorAll('.ctrl-btn:not(.special-btn):not(.repeat-active)').forEach(btn => { btn.style.background = `linear-gradient(135deg, ${col}, ${col}cc)`; });
+                    document.getElementById('downloadBtn').style.background = `linear-gradient(135deg, ${col}, ${col}cc)`;
+                    app.showNotif("🎨 تم تغيير اللون");
+                };
+            });
+            
+            const menuBtn = document.getElementById('menuBtn');
+            const drawerOverlay = document.getElementById('drawerOverlay');
+            const drawer = document.getElementById('drawer');
+            const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+            menuBtn.onclick = () => { drawerOverlay.classList.add('active'); drawer.classList.add('active'); };
+            closeDrawerBtn.onclick = () => { drawerOverlay.classList.remove('active'); drawer.classList.remove('active'); };
+            drawerOverlay.onclick = (e) => { if(e.target === drawerOverlay) { drawerOverlay.classList.remove('active'); drawer.classList.remove('active'); } };
+            
+            document.getElementById('refreshPrayerBtn').onclick = () => { fetchPrayerTimes(); };
+            
+            createClockNumbers();
+            updateClockHands();
+            startPrayerAutoUpdate();
+        })();
+    </script>
+</body>
+</html>
